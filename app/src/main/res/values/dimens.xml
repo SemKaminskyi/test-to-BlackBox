@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="frag_game_task_size">25sp</dimen>
+    <dimen name="frag_game_margin_top_text">40dp</dimen>
+    <dimen name="frag_game_img_animal_size">200dp</dimen>
+    <dimen name="frag_game_img_animal_margitn_top">32dp</dimen>
+    <dimen name="frag_game_img_but_choose">160dp</dimen>
+    <dimen name="frag_game_imgview_padding_inside">8dp</dimen>
+    <dimen name="frag_game_imgb_margin_start_end">40dp</dimen>
+</resources>
