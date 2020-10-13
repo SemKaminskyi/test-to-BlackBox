@@ -1,4 +1,4 @@
-package com.gmail.kaminskysem.myapplication;
+package com.gmail.kaminskysem.testBlackBox;
 
 import android.content.Context;
 

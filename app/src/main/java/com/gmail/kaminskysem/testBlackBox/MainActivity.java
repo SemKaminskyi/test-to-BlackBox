@@ -1,13 +1,14 @@
-package com.gmail.kaminskysem.myapplication;
+package com.gmail.kaminskysem.testBlackBox;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.CookieSyncManager;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.gmail.kaminskysem.myapplication.GameFragments.FragmentGame1;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,24 +23,35 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private final String urlString = "https://html5test.com/";
-    private boolean connectToSite = false;
     private WebView webView;
     private OkHttpClient client = new OkHttpClient();
-    private int numOfGame=1;
+
     private static final String GAME_ID = "game";
 
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        webView.saveState(outState);
+    }
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        webView= findViewById(R.id.wv_HTML5test);
+        webView = findViewById(R.id.wv_HTML5test);
+
+        String settingsTAG = "AppNameSettings";
 
 
-        if (connectToSite){
+
+        if (((MyApp) getApplication()).getFirstRun()) {
+            if (savedInstanceState != null)
+                webView.restoreState(savedInstanceState);
+            else{
             startConnect();
-        }else {
+            }
+        } else {
             openGame();
         }
 
@@ -47,16 +59,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //open webView
+    //Cookies used in WebView on default configuration
+
     private void startConnect() {
+        //add javaScript
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        //add cache
+        webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+
         Request request = new Request.Builder()
                 .url(urlString)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
-
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                connectToSite = false;
+                ((MyApp) getApplication()).setRunned();
                 openGame();
 
                 Log.e("HTTP", "failed to load http call", e);
@@ -64,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) {
+
                 runOnUiThread(() -> webView.loadUrl(urlString));
                 Log.e("HTTP", "successful to load http call");
             }
@@ -71,19 +92,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    private void openGame (){
+
+    private void openGame() {
         Intent intentFailure = new Intent(getApplicationContext(), GameActivity.class);
-        intentFailure.putExtra(GAME_ID, numOfGame);
         startActivity(intentFailure);
-
-
-
-
 
     }
 
-    public boolean isConnectToSite() {
-        return connectToSite;
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
     }
 }
 

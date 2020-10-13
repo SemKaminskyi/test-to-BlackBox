@@ -1,10 +1,10 @@
-package com.gmail.kaminskysem.myapplication;
+package com.gmail.kaminskysem.testBlackBox;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.gmail.kaminskysem.myapplication.GameFragments.FragmentGame1;
+import com.gmail.kaminskysem.testBlackBox.GameFragments.FragmentGame1;
 
 public class GameActivity extends AppCompatActivity {
 
